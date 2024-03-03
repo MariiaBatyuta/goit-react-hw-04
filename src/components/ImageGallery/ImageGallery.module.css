@@ -1,0 +1,24 @@
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    display: inline-block;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    gap: 8px;
+}
+
+li img {
+    width: 320px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
