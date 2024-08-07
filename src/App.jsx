@@ -1,37 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css'
 import SearchBar from './components/SearchBar/SearchBar';
 import { handlePhotoAPI } from './components/photoAxios/photoAxios';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Loader from './components/Loader/Loader';
 import LoadMore from './components/LoadMore/LoadMore';
-import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import ImageModal from './components/ImageModal/ImageModal';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [query, setQuery] = useState('');
   const [resultPhoto, setResultPhoto] = useState([]);
   const [page, setPage] = useState(1);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [indexPhoto, setIndexPhoto] = useState(null);
+
+  const galleryRef = useRef(null);
 
   useEffect(() => {
     async function getData() {
       try {
         setIsLoading(true);
-        setError(false);
         const data = await handlePhotoAPI(query, page);
         if (data.length === 0) {
-          setError(true);
+          setHasMore(false);
+          toast.error("No results found.");
         } else {
           setResultPhoto(prevResult => [...prevResult, ...data]);
+          setHasMore(true);
         }
       } catch (error) {
-        setError(true);
+        toast.error("Oops, something went wrong. Try reloading the page and entering the request again.");
       } finally {
         setIsLoading(false);
       }
@@ -41,10 +43,17 @@ function App() {
     }
   }, [query, page]);
 
+  useEffect(() => {
+    if (resultPhoto.length > 0 && page > 1) {
+      galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [resultPhoto]);
+
   const handleQuery = newQuery => {
     setQuery(newQuery);
     setPage(1);
     setResultPhoto([]);
+    setHasMore(true);
   };
 
   const handleNextPage = () => {
@@ -60,15 +69,14 @@ function App() {
     setIsOpen(false);
   };
 
-  const errorMessage = "Oops, something went wrong. Try reloading the page and entering the request again.";
-
   return (
     <>
+      <Toaster position='top-left'/>
       <SearchBar onSearch={handleQuery} />
-
-      {error ? (<ErrorMessage message={errorMessage} />) : (<ImageGallery items={resultPhoto} onClick={openModal} />)}
-
-      {resultPhoto.length >= 12 && <LoadMore handleNextPage={handleNextPage} />}
+      <div ref={galleryRef}>
+        <ImageGallery items={resultPhoto} onClick={openModal} />
+      </div>
+      {hasMore && resultPhoto.length >= 12 && <LoadMore handleNextPage={handleNextPage} />}
       {isLoading && <Loader />} 
       
       <ImageModal photos={resultPhoto} closeModal={closeModal} modalIsOpen={modalIsOpen} indexPhoto={indexPhoto} />

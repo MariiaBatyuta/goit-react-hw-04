@@ -22,3 +22,22 @@ li img {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
+
+@media (max-width: 480px) {
+    .item{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: calc(100% - 40px);
+        margin: 0 20px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .item {
+        display: inline-block;
+        width: 50%;
+    }
+}

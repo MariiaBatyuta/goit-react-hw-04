@@ -7,6 +7,7 @@
     height: 32px;
     gap: 4px;
     padding: 8px 0;
+    margin-bottom: 20px;
 }
 
 .inputContainer {
@@ -29,10 +30,4 @@
     border: none;
     padding: 0;
     cursor: pointer;
-}
-
-.error {
-    position: relative;
-    margin: 8px 0 0 8px;
-    color: orangered;
 }
