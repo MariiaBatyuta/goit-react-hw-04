@@ -1,5 +1,19 @@
 .image {
-    width: 920px;
-    height: 600px;
+    max-width: 920px;
+    max-height: 600px;
     object-fit: cover;
+}
+
+@media (max-width: 480px) {
+    .image {
+        max-width: 100%;
+        max-height: 300px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .image {
+        max-width: 100%;
+        max-height: 400px;
+    }
 }
