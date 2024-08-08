@@ -47,7 +47,7 @@ function App() {
     if (resultPhoto.length > 0 && page > 1) {
       galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
-  }, [resultPhoto]);
+  }, [resultPhoto, page]);
 
   const handleQuery = newQuery => {
     setQuery(newQuery);
