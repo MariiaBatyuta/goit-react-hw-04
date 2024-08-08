@@ -46,7 +46,7 @@ export default function SearchBar({ onSearch }) {
                             <button
                                 type="submit"
                                 className={css.searchButton}>
-                                <FaSearch />
+                                <FaSearch fontSize="16px"/>
                             </button>
                         </div>
                     </Form>
